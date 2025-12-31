@@ -1,0 +1,40 @@
+# Core Scientific Computing
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+
+# Simulation Platforms
+pybullet>=3.2.0
+# gazebo-ros2 is installed via system package manager
+# isaac-sim available via download
+
+# Machine Learning
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Robotics & Control
+# ROS2 installed via system package manager
+roboticstoolbox-python>=1.0.0
+spatialmath-python>=1.0.0
+
+# Visualization & Data
+pandas>=2.0.0
+plotly>=5.14.0
+pillow>=9.5.0
+
+# Code Quality & Testing
+pytest>=7.3.0
+black>=23.3.0
+pylint>=2.17.0
+mypy>=1.2.0
+flake8>=6.0.0
+
+# Development Tools
+jupyter>=1.0.0
+ipython>=8.12.0
+ipykernel>=6.23.0
+
+# Documentation
+docstring-parser>=0.15
+sphinx-rtd-theme>=1.2.0

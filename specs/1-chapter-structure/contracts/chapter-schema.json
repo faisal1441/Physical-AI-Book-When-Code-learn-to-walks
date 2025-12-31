@@ -1,0 +1,289 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Chapter Schema",
+  "description": "Complete specification for a book chapter in 'When Code Learns to Walk'",
+  "type": "object",
+  "required": [
+    "chapterNumber",
+    "title",
+    "scope",
+    "learningObjectives",
+    "prerequisites",
+    "constraints",
+    "codeExamples"
+  ],
+  "properties": {
+    "chapterNumber": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 13,
+      "description": "Chapter number (1-13)"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 100,
+      "description": "Chapter title"
+    },
+    "section": {
+      "type": "string",
+      "enum": ["00-frontmatter", "01-foundations", "02-core-implementations", "03-learning-systems", "04-advanced-systems"],
+      "description": "Book section containing this chapter"
+    },
+    "filename": {
+      "type": "string",
+      "pattern": "^[0-9]{2}-[a-z-]+\\.md$",
+      "description": "Markdown filename (e.g., 01-rigid-body-physics.md)"
+    },
+    "scope": {
+      "type": "object",
+      "required": ["description", "topics"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 100,
+          "maxLength": 300,
+          "description": "2-3 sentence description of chapter scope"
+        },
+        "topics": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 8,
+          "items": {
+            "type": "string"
+          },
+          "description": "Main topics covered (3-8 items)"
+        },
+        "whatWontBeCovered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Explicitly state what's out of scope"
+        }
+      }
+    },
+    "learningObjectives": {
+      "type": "object",
+      "required": ["quickStart", "coreConcepts", "deepDive"],
+      "properties": {
+        "quickStart": {
+          "type": "object",
+          "required": ["objective", "bloomLevel", "assessment"],
+          "properties": {
+            "objective": {
+              "type": "string",
+              "pattern": "^(Understand|Apply|Analyze|Evaluate|Create)",
+              "description": "Quick Start learning objective (5 min level)"
+            },
+            "bloomLevel": {
+              "type": "integer",
+              "enum": [1, 2, 3, 4, 5, 6],
+              "description": "Bloom's taxonomy level (1=Remember, 6=Create)"
+            },
+            "assessment": {
+              "type": "string",
+              "description": "How to assess achievement"
+            }
+          }
+        },
+        "coreConcepts": {
+          "type": "object",
+          "required": ["objective", "bloomLevel", "assessment"],
+          "properties": {
+            "objective": {
+              "type": "string",
+              "pattern": "^(Understand|Apply|Analyze|Evaluate|Create)",
+              "description": "Core Concepts learning objective (20 min level)"
+            },
+            "bloomLevel": {
+              "type": "integer",
+              "enum": [1, 2, 3, 4, 5, 6],
+              "description": "Bloom's taxonomy level"
+            },
+            "assessment": {
+              "type": "string"
+            }
+          }
+        },
+        "deepDive": {
+          "type": "object",
+          "required": ["objective", "bloomLevel", "assessment"],
+          "properties": {
+            "objective": {
+              "type": "string",
+              "pattern": "^(Understand|Apply|Analyze|Evaluate|Create)",
+              "description": "Deep Dive learning objective (45 min+ level)"
+            },
+            "bloomLevel": {
+              "type": "integer",
+              "enum": [1, 2, 3, 4, 5, 6]
+            },
+            "assessment": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "prerequisites": {
+      "type": "object",
+      "required": ["chapters", "knowledge"],
+      "properties": {
+        "chapters": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 13
+          },
+          "description": "Chapter numbers that must be read first (empty if none)"
+        },
+        "knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Assumed knowledge (e.g., 'Linear algebra', 'Python 3.10+')"
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["physics", "latency", "safety", "energy", "sim-to-real"]
+      },
+      "minItems": 1,
+      "maxItems": 5,
+      "description": "Physical AI constraints addressed in this chapter"
+    },
+    "codeExamples": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["number", "title", "platform", "language", "estimatedLOC", "estimatedTime"],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "enum": [1, 2, 3, 4]
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string",
+            "enum": ["PyBullet", "Gazebo", "Ignition", "ROS2", "Hybrid"]
+          },
+          "language": {
+            "type": "string",
+            "enum": ["Python", "C++", "Python + C++"]
+          },
+          "estimatedLOC": {
+            "type": "integer",
+            "minimum": 20,
+            "maximum": 500
+          },
+          "estimatedTime": {
+            "type": "string",
+            "pattern": "^[0-9]+(s|min)$",
+            "description": "Execution time estimate (e.g., '5s', '30min')"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Prior examples this depends on"
+          }
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "properties": {
+        "quickStartSection": {
+          "type": "boolean",
+          "default": true
+        },
+        "coreSections": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 8,
+          "description": "Number of main content sections"
+        },
+        "deepDiveSection": {
+          "type": "boolean",
+          "default": true
+        },
+        "practiceExercises": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 5
+        }
+      }
+    },
+    "estimatedReadingTime": {
+      "type": "object",
+      "required": ["quickStart", "coreConcepts", "deepDive"],
+      "properties": {
+        "quickStart": {
+          "type": "integer",
+          "description": "Minutes for Quick Start section"
+        },
+        "coreConcepts": {
+          "type": "integer",
+          "description": "Minutes for Core Concepts"
+        },
+        "deepDive": {
+          "type": "integer",
+          "description": "Minutes for Deep Dive"
+        }
+      }
+    },
+    "relatedChapters": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 13
+      },
+      "description": "Other chapters with related content"
+    },
+    "keyReferences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "authors": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "drafted", "reviewed", "published"],
+      "default": "planned"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Implementation notes for authors"
+    }
+  }
+}

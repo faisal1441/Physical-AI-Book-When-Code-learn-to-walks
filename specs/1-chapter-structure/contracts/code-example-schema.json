@@ -1,0 +1,352 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Code Example Schema",
+  "description": "Specification for executable code examples in book chapters",
+  "type": "object",
+  "required": [
+    "exampleId",
+    "chapterNumber",
+    "title",
+    "learningLevel",
+    "simulationPlatform",
+    "language",
+    "complexity"
+  ],
+  "properties": {
+    "exampleId": {
+      "type": "string",
+      "pattern": "^ch[0-9]{2}_ex[0-9]{1}_.+$",
+      "description": "Unique ID (e.g., ch01_ex1_pendulum)"
+    },
+    "chapterNumber": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 13
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 80
+    },
+    "description": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 300,
+      "description": "What this example teaches"
+    },
+    "learningLevel": {
+      "type": "string",
+      "enum": ["quick-start", "core-concepts", "deep-dive"],
+      "description": "Corresponds to chapter learning level"
+    },
+    "simulationPlatform": {
+      "type": "string",
+      "enum": ["PyBullet", "Gazebo", "Ignition", "Hybrid", "None"],
+      "description": "Primary simulation platform"
+    },
+    "language": {
+      "type": "string",
+      "enum": ["Python", "C++", "Python + C++", "Bash"],
+      "description": "Implementation language(s)"
+    },
+    "complexity": {
+      "type": "object",
+      "required": ["estimatedLOC", "estimatedTime"],
+      "properties": {
+        "estimatedLOC": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 500,
+          "description": "Lines of code estimate"
+        },
+        "estimatedTime": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300,
+          "description": "Execution time in seconds"
+        },
+        "conceptualDifficulty": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "advanced"],
+          "description": "Conceptual difficulty level"
+        },
+        "implementationDifficulty": {
+          "type": "string",
+          "enum": ["straightforward", "moderate", "challenging"],
+          "description": "Implementation difficulty"
+        }
+      }
+    },
+    "objectives": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      },
+      "description": "Learning objectives demonstrated by this example"
+    },
+    "files": {
+      "type": "object",
+      "required": ["mainScript"],
+      "properties": {
+        "mainScript": {
+          "type": "string",
+          "pattern": "^[0-9]{2}_[a-z_]+\\.py$",
+          "description": "Main Python script (e.g., 01_intro_pendulum.py)"
+        },
+        "testFile": {
+          "type": "string",
+          "pattern": "^test_[a-z_]+\\.py$",
+          "description": "Unit test file"
+        },
+        "configFile": {
+          "type": "string",
+          "description": "Config file if needed (YAML/JSON)"
+        },
+        "readme": {
+          "type": "string",
+          "pattern": "^README\\.md$",
+          "description": "Example-specific README"
+        },
+        "additionalFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Any other files (URDF, data, etc.)"
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "properties": {
+        "pythonPackages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "optional": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          },
+          "description": "Python package dependencies"
+        },
+        "systemDependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "System-level dependencies"
+        },
+        "priorExamples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Previous examples this builds on"
+        }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "description": "What the example receives as input",
+      "properties": {
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type"],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "default": {},
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "externalData": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Data files required"
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "description": "What the example produces",
+      "properties": {
+        "console": {
+          "type": "string",
+          "description": "Expected console output"
+        },
+        "plots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Generated plots/images"
+        },
+        "dataFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Generated data files"
+        }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "properties": {
+        "testFramework": {
+          "type": "string",
+          "enum": ["pytest", "unittest", "gtest", "none"]
+        },
+        "testCases": {
+          "type": "integer",
+          "description": "Number of test cases"
+        },
+        "coverage": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Code coverage percentage"
+        },
+        "reproducibility": {
+          "type": "object",
+          "properties": {
+            "randomSeed": {
+              "type": "integer",
+              "description": "Fixed seed for reproducibility"
+            },
+            "deterministicOutput": {
+              "type": "boolean",
+              "description": "Same output every run?"
+            }
+          }
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "properties": {
+        "expectedTime": {
+          "type": "integer",
+          "description": "Expected execution time (seconds)"
+        },
+        "maxTime": {
+          "type": "integer",
+          "description": "Maximum acceptable execution time"
+        },
+        "memoryUsage": {
+          "type": "string",
+          "description": "Typical memory usage (MB)"
+        },
+        "cpuUsage": {
+          "type": "string",
+          "description": "Typical CPU usage percentage"
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["physics", "latency", "safety", "energy", "sim-to-real"]
+      },
+      "description": "Which constraints this example illustrates"
+    },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Key concepts demonstrated (e.g., PID control, domain randomization)"
+    },
+    "commonMistakes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Common mistakes learners make"
+    },
+    "extensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Ways to extend the example"
+    },
+    "qualityChecklist": {
+      "type": "object",
+      "properties": {
+        "codeFormatted": {
+          "type": "boolean",
+          "description": "Formatted with Black?"
+        },
+        "typeHinted": {
+          "type": "boolean",
+          "description": "All functions type-hinted?"
+        },
+        "documented": {
+          "type": "boolean",
+          "description": "Has docstrings and comments?"
+        },
+        "tested": {
+          "type": "boolean",
+          "description": "Has unit tests?"
+        },
+        "executionTested": {
+          "type": "boolean",
+          "description": "Runs without errors?"
+        },
+        "timeValidated": {
+          "type": "boolean",
+          "description": "Meets time requirements?"
+        },
+        "reproducible": {
+          "type": "boolean",
+          "description": "Consistent output each run?"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "drafted", "implemented", "tested", "reviewed", "complete"],
+      "default": "planned"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Implementation notes"
+    }
+  }
+}
