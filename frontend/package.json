@@ -1,6 +1,6 @@
 {
   "name": "when-code-learns-to-walk-frontend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Interactive web frontend for 'When Code Learns to Walk' Physical AI book",
   "private": true,
   "scripts": {
